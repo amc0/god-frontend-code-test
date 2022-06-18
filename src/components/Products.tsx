@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import { Col, DebugGrid, Grid, Inline, Link, Row, Text } from "vcc-ui";
+import { Col, DebugGrid, Grid, Inline, Link, Row, Spacer, Text } from "vcc-ui";
 import { GetServerSideProps } from "next";
 
 interface IProductInfo {
@@ -14,7 +14,7 @@ export const Product: React.FC<IProductInfo> = (productInfo: IProductInfo) => {
       <Row align="start">
         <Col size={12}>
           <Text
-            extend={{ textTransform: "uppercase", color: "gray" }}
+            extend={{ textTransform: "uppercase", color: "#707070" }}
             variant="bates"
             subStyle="emphasis"
           >
@@ -41,17 +41,22 @@ export const Product: React.FC<IProductInfo> = (productInfo: IProductInfo) => {
           height={500}
         />
       </Row>
+      <Spacer />
       <Row align="center">
-        <Col size={2}>
-          <Link href={`/learn-${productInfo.carInfo.id}`} arrow="right">
-            Learn
-          </Link>
-        </Col>
-        <Col size={2}>
-          <Link href={`/shop-${productInfo.carInfo.id}`} arrow="right">
-            Shop
-          </Link>
-        </Col>
+        <Link
+          href={`/learn-${productInfo.carInfo.id}`}
+          arrow="right"
+          style={{ paddingRight: "1rem" }}
+        >
+          Learn
+        </Link>
+        <Link
+          href={`/shop-${productInfo.carInfo.id}`}
+          arrow="right"
+          style={{ paddingLeft: "1rem" }}
+        >
+          Shop
+        </Link>
       </Row>
     </Grid>
   );
