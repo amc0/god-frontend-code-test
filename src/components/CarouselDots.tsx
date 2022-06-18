@@ -1,6 +1,6 @@
 import React from "react";
 import { CarsInfo } from "../../types/CarsInfo";
-import { Product } from "./Products";
+import { Product } from "./Product";
 
 interface IProductsCarouselProps {
   length: number;

@@ -10,7 +10,7 @@ interface IProductInfo {
 export const Product: React.FC<IProductInfo> = (productInfo: IProductInfo) => {
   console.log(productInfo);
   return (
-    <li>
+    <li className="product">
       <Grid>
         <Row align="start">
           <Col size={12}>
@@ -60,6 +60,13 @@ export const Product: React.FC<IProductInfo> = (productInfo: IProductInfo) => {
           </Link>
         </Row>
       </Grid>
+      <style jsx>
+        {`
+          .product {
+            flex-basis: 33%;
+          }
+        `}
+      </style>
     </li>
   );
 };
