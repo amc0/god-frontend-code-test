@@ -1,16 +1,21 @@
-import React from "react";
+import React, { useRef } from "react";
 import Image from "next/image";
 import { Col, DebugGrid, Grid, Inline, Link, Row, Spacer, Text } from "vcc-ui";
 import { GetServerSideProps } from "next";
+import { CarsInfo } from "../../types/CarsInfo";
 
-interface IProductInfo {
-  carInfo: any;
+interface IProductProps {
+  productIndex: number;
+  carInfo: CarsInfo;
+  setProductRef: (element: HTMLLIElement | null, index: number) => void;
 }
 
-export const Product: React.FC<IProductInfo> = (productInfo: IProductInfo) => {
-  console.log(productInfo);
+export const Product: React.FC<IProductProps> = (props) => {
   return (
-    <li className="product">
+    <li
+      className="product"
+      ref={(li) => props.setProductRef(li, props.productIndex)}
+    >
       <Grid>
         <Row align="start">
           <Col size={12}>
@@ -19,43 +24,33 @@ export const Product: React.FC<IProductInfo> = (productInfo: IProductInfo) => {
               variant="bates"
               subStyle="emphasis"
             >
-              {productInfo.carInfo.bodyType}
+              {props.carInfo.bodyType}
             </Text>
           </Col>
         </Row>
 
         <Row align="start">
-          <Col size={2}>
-            <Text subStyle="emphasis">{productInfo.carInfo.modelName}</Text>
+          <Col size={4}>
+            <Text subStyle="emphasis">{props.carInfo.modelName}</Text>
           </Col>
-          <Col size={2}>
-            <Text extend={{ color: "gray" }}>
-              {productInfo.carInfo.modelType}
-            </Text>
+          <Col size={1}>
+            <Text extend={{ color: "gray" }}>{props.carInfo.modelType}</Text>
           </Col>
         </Row>
         <Row>
           <Image
-            src={productInfo.carInfo.imageUrl}
-            alt={productInfo.carInfo.modelName}
+            src={props.carInfo.imageUrl}
+            alt={props.carInfo.modelName}
             width={600}
             height={500}
           />
         </Row>
         <Spacer />
         <Row align="center">
-          <Link
-            href={`/learn-${productInfo.carInfo.id}`}
-            arrow="right"
-            style={{ paddingRight: "1rem" }}
-          >
+          <Link href={`/learn-${props.carInfo.id}`} arrow="right">
             Learn
           </Link>
-          <Link
-            href={`/shop-${productInfo.carInfo.id}`}
-            arrow="right"
-            style={{ paddingLeft: "1rem" }}
-          >
+          <Link href={`/shop-${props.carInfo.id}`} arrow="right">
             Shop
           </Link>
         </Row>
@@ -63,7 +58,14 @@ export const Product: React.FC<IProductInfo> = (productInfo: IProductInfo) => {
       <style jsx>
         {`
           .product {
-            flex-basis: 33%;
+            flex: 0 0 25%;
+
+            display: flex;
+            padding: 0 ($spacing / 2);
+            box-sizing: border-box;
+
+            list-style-type: none;
+            scroll-snap-align: start;
           }
         `}
       </style>
