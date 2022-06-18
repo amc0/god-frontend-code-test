@@ -12,11 +12,11 @@ export const ProductsCarousel: React.FC<IProductsCarouselProps> = (props) => {
 
   return (
     <div className="my-12 mx-auto">
-      <div className="relative overflow-hidden">
+      <ul>
         {props.products.map((car) => (
           <Product carInfo={car} key={car.id} />
         ))}
-      </div>
+      </ul>
       <CarouselDots
         length={props.products.length}
         currActive={currActive}

@@ -22,8 +22,8 @@ export const CarouselDots: React.FC<IProductsCarouselProps> = (props) => {
         {`
           .dots-wrapper {
             cursor: pointer;
-            display: flax;
-            flex-direction: column;
+            display: flex;
+            flex-direction: row;
             justify-content: center;
           }
           .dot {
