@@ -5,6 +5,7 @@ import { GetServerSideProps } from "next";
 import { CarsInfo } from "../../types/CarsInfo";
 
 interface IProductProps {
+  isMobile: boolean;
   productIndex: number;
   carInfo: CarsInfo;
   setProductRef: (element: HTMLLIElement | null, index: number) => void;
@@ -60,7 +61,7 @@ export const Product: React.FC<IProductProps> = (props) => {
       <style jsx>
         {`
           .product {
-            flex: 0 0 26%;
+            flex: 0 0 ${props.isMobile ? "85%" : "26%"};
 
             display: flex;
             padding: 0 ($spacing / 2);

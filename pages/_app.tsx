@@ -5,7 +5,7 @@ import response from "../public/api/cars.json";
 import { ProductsCarousel } from "./../src/components/ProductsCarousel";
 import { CarsInfo } from "../types/CarsInfo";
 import { FilterBar } from "../src/components/FilterBar";
-import { GetServerSideProps } from "next";
+import { NextPageContext } from "next";
 
 interface HomePageProps {
   cars: CarsInfo[];
@@ -28,7 +28,7 @@ function HomePage(props: HomePageProps) {
   );
 }
 
-HomePage.getInitialProps = async () => {
+HomePage.getInitialProps = async (context: NextPageContext) => {
   return { cars: response as CarsInfo[] };
 };
 

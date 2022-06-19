@@ -3,7 +3,7 @@ import { CarsInfo } from "../../types/CarsInfo";
 import { CarouselButtons } from "./CarouselButtons";
 import { CarouselDots } from "./CarouselDots";
 import { Product } from "./Product";
-import { GetServerSideProps } from 'next';
+import { GetServerSideProps } from "next";
 
 interface IProductsCarouselProps {
   products: CarsInfo[];
@@ -15,12 +15,29 @@ export const ProductsCarousel: React.FC<IProductsCarouselProps> = (props) => {
   const [currActive, setCurrActive] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
 
-  const setProductRef = (element: HTMLLIElement | null, index: number) =>
-    (productRefs.current[index] = element);
+  useEffect(() => {
+    window.addEventListener("resize", reportWindowSize);
+
+    return function cleanup() {
+      window.removeEventListener("resize", reportWindowSize);
+    };
+  });
+
+  const reportWindowSize = (event: UIEvent) => {
+    console.log(event);
+    setIsMobile(
+      event && event.currentTarget && event.currentTarget.innerWidth < 600
+        ? true
+        : false
+    );
+  };
 
   useEffect(() => {
     if (currActive + 4 <= props.products.length) handleScroll(currActive);
   }, [currActive, props.products.length]);
+
+  const setProductRef = (element: HTMLLIElement | null, index: number) =>
+    (productRefs.current[index] = element);
 
   useEffect(() => {
     const callback: IntersectionObserverCallback = (entries) => {
@@ -52,8 +69,6 @@ export const ProductsCarousel: React.FC<IProductsCarouselProps> = (props) => {
       currActive
     ];
 
-    console.log(product);
-
     if (product) observer.observe(product);
 
     return function cleanup() {
@@ -78,6 +93,7 @@ export const ProductsCarousel: React.FC<IProductsCarouselProps> = (props) => {
           <Product
             carInfo={car}
             key={car.id}
+            isMobile={isMobile}
             productIndex={index}
             setProductRef={setProductRef}
           />
@@ -120,12 +136,3 @@ export const ProductsCarousel: React.FC<IProductsCarouselProps> = (props) => {
     </div>
   );
 };
-
-export const getServerSideProps : GetServerSideProps = async (context) => {
- 
-  return {
-    props: {
-      device: context.req.device,
-    },
-  }
-}
