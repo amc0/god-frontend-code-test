@@ -34,10 +34,11 @@ export const Product: React.FC<IProductProps> = (props) => {
           <Col size={4}>
             <Text subStyle="emphasis">{props.carInfo.modelName}</Text>
           </Col>
-          <Col size={1}>
+          <Col size={8}>
             <Text extend={{ color: "gray" }}>{props.carInfo.modelType}</Text>
           </Col>
         </Row>
+        <Spacer />
         <Row>
           <Image
             src={props.carInfo.imageUrl}

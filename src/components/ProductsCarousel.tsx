@@ -1,8 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { ContextType, useEffect, useRef, useState } from "react";
 import { CarsInfo } from "../../types/CarsInfo";
 import { CarouselButtons } from "./CarouselButtons";
 import { CarouselDots } from "./CarouselDots";
 import { Product } from "./Product";
+import { GetServerSideProps } from 'next';
 
 interface IProductsCarouselProps {
   products: CarsInfo[];
@@ -18,49 +19,60 @@ export const ProductsCarousel: React.FC<IProductsCarouselProps> = (props) => {
     (productRefs.current[index] = element);
 
   useEffect(() => {
-    if (currActive + 4 <= props.products.length)
-    handleScroll(currActive);
+    if (currActive + 4 <= props.products.length) handleScroll(currActive);
   }, [currActive, props.products.length]);
 
-  // useEffect(() => {
-  //   const callback: IntersectionObserverCallback = (entries) => {
-  //     entries.forEach((entry) => {
-  //       if (entry.isIntersecting) {
-  //         const index = (productRefs.current as Element[]).indexOf(
-  //           entry.target
-  //         );
-  //         // setCurrActive(index);
-  //       }
-  //     });
-  //   };
+  useEffect(() => {
+    const callback: IntersectionObserverCallback = (entries) => {
+      console.log("OBSER:", entries);
+      entries.forEach((entry) => {
+        console.log("IS: ", entry);
+        if (!entry.isVisible) {
+          const index = (productRefs.current as Element[]).indexOf(
+            entry.target
+          );
+          if (
+            productRefs &&
+            productRefs.current &&
+            productRefs.current[currActive]
+          ) {
+            console.log("UNOBSERVE: ", entry);
+            observer.unobserve(productRefs.current[currActive]);
+            //etCurrActive(currActive + 1);
+          }
+        }
+      });
+    };
 
-  //   const observer = new IntersectionObserver(callback, {
-  //     root: carouselRef.current,
-  //     threshold: 0.8,
-  //   });
-  //   productRefs.current
-  //     .filter((h) => h !== undefined)
-  //     .forEach((product) => {
-  //       console.log("INTERSECT: ", product);
-  //       if (product) observer.observe(product);
-  //     });
+    const observer = new IntersectionObserver(callback, {
+      root: carouselRef.current,
+      threshold: 0.9,
+    });
+    var product = productRefs.current.filter((h) => h !== undefined)[
+      currActive
+    ];
 
-  //   return function cleanup() {
-  //     observer.disconnect();
-  //   };
-  // }, [props.products]);
+    console.log(product);
+
+    if (product) observer.observe(product);
+
+    return function cleanup() {
+      observer.disconnect();
+    };
+  }, [props.products, currActive]);
 
   const handleScroll = (index: number) => {
     let ref = productRefs.current[index];
 
-    carouselRef.current.scrollTo({
-      left: ref?.offsetLeft,
-      behavior: "smooth",
-    });
+    if (carouselRef && carouselRef.current)
+      carouselRef.current.scrollTo({
+        left: ref?.offsetLeft,
+        behavior: "smooth",
+      });
   };
 
   return (
-    <div>
+    <div className="carousel-wrapper">
       <ul className="products-list" ref={carouselRef}>
         {props.products.map((car, index) => (
           <Product
@@ -71,7 +83,7 @@ export const ProductsCarousel: React.FC<IProductsCarouselProps> = (props) => {
           />
         ))}
       </ul>
-      {!isMobile ? (
+      {isMobile ? (
         <CarouselDots
           length={props.products.length}
           currActive={currActive}
@@ -86,6 +98,9 @@ export const ProductsCarousel: React.FC<IProductsCarouselProps> = (props) => {
       )}
       <style jsx>
         {`
+          .carousel-wrapper {
+            padding: 0;
+          }
           .products-list {
             display: flex;
             flex-direction: row;
@@ -105,3 +120,12 @@ export const ProductsCarousel: React.FC<IProductsCarouselProps> = (props) => {
     </div>
   );
 };
+
+export const getServerSideProps : GetServerSideProps = async (context) => {
+ 
+  return {
+    props: {
+      device: context.req.device,
+    },
+  }
+}
