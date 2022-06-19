@@ -1,9 +1,8 @@
-import React, { ContextType, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { CarsInfo } from "../../types/CarsInfo";
 import { CarouselButtons } from "./CarouselButtons";
 import { CarouselDots } from "./CarouselDots";
 import { Product } from "./Product";
-import { GetServerSideProps } from "next";
 
 interface IProductsCarouselProps {
   products: CarsInfo[];
@@ -121,6 +120,7 @@ export const ProductsCarousel: React.FC<IProductsCarouselProps> = (props) => {
             display: flex;
             flex-direction: row;
             overflow-x: auto;
+            padding: unset;
 
             scroll-snap-type: x mandatory;
             overscroll-behavior: contain;

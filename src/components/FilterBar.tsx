@@ -1,6 +1,5 @@
-import { getValue } from "@testing-library/user-event/dist/utils";
 import React, { useEffect, useRef, useState } from "react";
-import { SelectInput } from "vcc-ui";
+import { SelectInput, TabNav, TabNavItem } from "vcc-ui";
 
 interface IFilterbarProps {
   bodyTypes: string[];
@@ -11,22 +10,18 @@ interface IFilterbarProps {
 export const FilterBar: React.FC<IFilterbarProps> = (props) => {
   return (
     <div className="filter-bar-wrapper">
-      <SelectInput
-        label={"Body type"}
-        value={props.selectedBodyType}
-        onChange={(e) => props.setBodyType(e.target.value)}
-      >
-        <option value={""}></option>
+      <TabNav>
+        <TabNavItem onClick={(e) => props.setBodyType("")}>All</TabNavItem>
         {props.bodyTypes.map((type, index) => (
-          <option value={type} key={index}>
+          <TabNavItem
+            key={index}
+            onClick={(e) => props.setBodyType(type)}
+            style={{ textTransform: "capitalize" }}
+          >
             {type}
-          </option>
+          </TabNavItem>
         ))}
-      </SelectInput>
-      <style jsx>{`
-        .filter-bar-wrapper {
-        }
-      `}</style>
+      </TabNav>
     </div>
   );
 };

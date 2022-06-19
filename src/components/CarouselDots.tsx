@@ -1,6 +1,4 @@
 import React from "react";
-import { CarsInfo } from "../../types/CarsInfo";
-import { Product } from "./Product";
 
 interface IProductsCarouselProps {
   length: number;
@@ -16,6 +14,9 @@ export const CarouselDots: React.FC<IProductsCarouselProps> = (props) => {
           key={i}
           className={`dot ${props.currActive === i ? "isActive" : ""}`}
           onClick={() => props.setCurrActive(i)}
+          onKeyPress={() => props.setCurrActive(i)}
+          role="button"
+          tabIndex={i}
         ></span>
       ))}
       <style jsx>

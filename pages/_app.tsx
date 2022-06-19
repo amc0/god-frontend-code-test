@@ -1,11 +1,12 @@
 import "../public/css/styles.css";
 import React, { useState } from "react";
-import { StyleProvider, ThemePicker } from "vcc-ui";
+import { Nav, StyleProvider, ThemePicker } from "vcc-ui";
 import response from "../public/api/cars.json";
 import { ProductsCarousel } from "./../src/components/ProductsCarousel";
 import { CarsInfo } from "../types/CarsInfo";
 import { FilterBar } from "../src/components/FilterBar";
 import { NextPageContext } from "next";
+import Head from "next/head";
 
 interface HomePageProps {
   cars: CarsInfo[];
@@ -23,13 +24,21 @@ function HomePage(props: HomePageProps) {
   );
   return (
     <React.StrictMode>
+      <Head>
+        <title>Volvo - Cars list</title>
+      </Head>
       <StyleProvider>
         <ThemePicker variant="light">
-          <FilterBar
-            bodyTypes={bodyTypes}
-            selectedBodyType={bodyType}
-            setBodyType={setBodyType}
-          />
+          <Nav>
+            <div className="logowrapper">
+
+            </div>
+            <FilterBar
+              bodyTypes={bodyTypes}
+              selectedBodyType={bodyType}
+              setBodyType={setBodyType}
+            />
+          </Nav>
           <ProductsCarousel products={filteredCars} />
         </ThemePicker>
       </StyleProvider>
