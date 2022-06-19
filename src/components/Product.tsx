@@ -15,6 +15,7 @@ export const Product: React.FC<IProductProps> = (props) => {
     <li
       className="product"
       ref={(li) => props.setProductRef(li, props.productIndex)}
+      id={`car-${props.productIndex}`}
     >
       <Grid>
         <Row align="start">
@@ -58,7 +59,7 @@ export const Product: React.FC<IProductProps> = (props) => {
       <style jsx>
         {`
           .product {
-            flex: 0 0 25%;
+            flex: 0 0 26%;
 
             display: flex;
             padding: 0 ($spacing / 2);

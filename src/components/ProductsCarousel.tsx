@@ -18,33 +18,46 @@ export const ProductsCarousel: React.FC<IProductsCarouselProps> = (props) => {
     (productRefs.current[index] = element);
 
   useEffect(() => {
-    const callback: IntersectionObserverCallback = (entries) => {
-      entries.forEach((entry) => {
-        console.log("INTERSECT: ", entry);
-        if (entry.isIntersecting) {
-          const index = (productRefs.current as Element[]).indexOf(
-            entry.target
-          );
-          setCurrActive(index);
-        }
-      });
-    };
+    if (currActive + 4 <= props.products.length)
+    handleScroll(currActive);
+  }, [currActive, props.products.length]);
 
-    const observer = new IntersectionObserver(callback, {
-      root: carouselRef.current,
-      threshold: 0.6,
+  // useEffect(() => {
+  //   const callback: IntersectionObserverCallback = (entries) => {
+  //     entries.forEach((entry) => {
+  //       if (entry.isIntersecting) {
+  //         const index = (productRefs.current as Element[]).indexOf(
+  //           entry.target
+  //         );
+  //         // setCurrActive(index);
+  //       }
+  //     });
+  //   };
+
+  //   const observer = new IntersectionObserver(callback, {
+  //     root: carouselRef.current,
+  //     threshold: 0.8,
+  //   });
+  //   productRefs.current
+  //     .filter((h) => h !== undefined)
+  //     .forEach((product) => {
+  //       console.log("INTERSECT: ", product);
+  //       if (product) observer.observe(product);
+  //     });
+
+  //   return function cleanup() {
+  //     observer.disconnect();
+  //   };
+  // }, [props.products]);
+
+  const handleScroll = (index: number) => {
+    let ref = productRefs.current[index];
+
+    carouselRef.current.scrollTo({
+      left: ref?.offsetLeft,
+      behavior: "smooth",
     });
-    productRefs.current
-      .filter((h) => h !== undefined)
-      .forEach((product) => {
-        console.log("INTERSECT: ", product);
-        if (product) observer.observe(product);
-      });
-
-    return function cleanup() {
-      observer.disconnect();
-    };
-  }, [props.products]);
+  };
 
   return (
     <div>
@@ -80,6 +93,12 @@ export const ProductsCarousel: React.FC<IProductsCarouselProps> = (props) => {
 
             scroll-snap-type: x mandatory;
             overscroll-behavior: contain;
+
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+          }
+          .products-list::-webkit-scrollbar {
+            display: none;
           }
         `}
       </style>
