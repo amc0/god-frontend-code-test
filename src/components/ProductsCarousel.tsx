@@ -47,14 +47,11 @@ export const ProductsCarousel: React.FC<IProductsCarouselProps> = (props) => {
   useEffect(() => {
     if (!isMobile) return;
     const callback: IntersectionObserverCallback = (entries) => {
-      console.log("OBSER:", entries);
       entries.forEach((entry) => {
-        console.log("IS: ", entry);
         if (entry.isIntersecting) {
           const index = (productRefs.current as Element[]).indexOf(
             entry.target
           );
-          console.log(index);
           setCurrActive(index);
         }
       });
@@ -73,14 +70,18 @@ export const ProductsCarousel: React.FC<IProductsCarouselProps> = (props) => {
     };
   }, [props.products, isMobile]);
 
+  const mobileSetCurrent = (index: number) => {
+    setCurrActive(index);
+    handleScroll(index);
+  };
+
   const handleScroll = (index: number) => {
     let ref = productRefs.current[index];
 
     if (carouselRef && carouselRef.current) {
-      //setSkipObserve(true);
       carouselRef.current.scrollTo({
         left: ref?.offsetLeft,
-        behavior: "smooth",
+        behavior: "auto",
       });
     }
   };
@@ -102,7 +103,7 @@ export const ProductsCarousel: React.FC<IProductsCarouselProps> = (props) => {
         <CarouselDots
           length={props.products.length}
           currActive={currActive}
-          setCurrActive={setCurrActive}
+          setCurrActive={mobileSetCurrent}
         />
       ) : (
         <CarouselButtons
