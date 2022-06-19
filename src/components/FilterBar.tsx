@@ -4,18 +4,19 @@ import { SelectInput } from "vcc-ui";
 
 interface IFilterbarProps {
   bodyTypes: string[];
+  selectedBodyType: string;
+  setBodyType: (bodyType: string) => void;
 }
 
 export const FilterBar: React.FC<IFilterbarProps> = (props) => {
-  const [value, setValue] = useState();
-
   return (
     <div className="filter-bar-wrapper">
       <SelectInput
         label={"Body type"}
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
+        value={props.selectedBodyType}
+        onChange={(e) => props.setBodyType(e.target.value)}
       >
+        <option value={""}></option>
         {props.bodyTypes.map((type, index) => (
           <option value={type} key={index}>
             {type}
