@@ -10,80 +10,79 @@ interface IProductsCarouselProps {
 }
 
 export const ProductsCarousel: React.FC<IProductsCarouselProps> = (props) => {
+  const mobileBreakpoint = 600;
   const carouselRef = useRef<HTMLUListElement>(null);
   const productRefs = useRef<(HTMLLIElement | null)[]>([]);
   const [currActive, setCurrActive] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    setIsMobile(window.innerWidth < mobileBreakpoint);
     window.addEventListener("resize", reportWindowSize);
 
     return function cleanup() {
       window.removeEventListener("resize", reportWindowSize);
     };
-  });
+  }, []);
 
   const reportWindowSize = (event: UIEvent) => {
     console.log(event);
     setIsMobile(
-      event && event.currentTarget && event.currentTarget.innerWidth < 600
+      event &&
+        event.currentTarget &&
+        event.currentTarget.innerWidth < mobileBreakpoint
         ? true
         : false
     );
   };
 
   useEffect(() => {
-    if (currActive + 4 <= props.products.length) handleScroll(currActive);
-  }, [currActive, props.products.length]);
+    if (currActive <= props.products.length && !isMobile)
+      handleScroll(currActive);
+  }, [currActive, props.products.length, isMobile]);
 
   const setProductRef = (element: HTMLLIElement | null, index: number) =>
     (productRefs.current[index] = element);
 
   useEffect(() => {
+    if (!isMobile) return;
     const callback: IntersectionObserverCallback = (entries) => {
       console.log("OBSER:", entries);
       entries.forEach((entry) => {
         console.log("IS: ", entry);
-        if (!entry.isVisible) {
+        if (entry.isIntersecting) {
           const index = (productRefs.current as Element[]).indexOf(
             entry.target
           );
-          if (
-            productRefs &&
-            productRefs.current &&
-            productRefs.current[currActive]
-          ) {
-            console.log("UNOBSERVE: ", entry);
-            observer.unobserve(productRefs.current[currActive]);
-            //etCurrActive(currActive + 1);
-          }
+          console.log(index);
+          setCurrActive(index);
         }
       });
     };
-
     const observer = new IntersectionObserver(callback, {
       root: carouselRef.current,
       threshold: 0.9,
     });
-    var product = productRefs.current.filter((h) => h !== undefined)[
-      currActive
-    ];
-
-    if (product) observer.observe(product);
-
+    productRefs.current
+      .filter((h) => h !== undefined)
+      .forEach((product) => {
+        if (product) observer.observe(product);
+      });
     return function cleanup() {
       observer.disconnect();
     };
-  }, [props.products, currActive]);
+  }, [props.products, isMobile]);
 
   const handleScroll = (index: number) => {
     let ref = productRefs.current[index];
 
-    if (carouselRef && carouselRef.current)
+    if (carouselRef && carouselRef.current) {
+      //setSkipObserve(true);
       carouselRef.current.scrollTo({
         left: ref?.offsetLeft,
         behavior: "smooth",
       });
+    }
   };
 
   return (
