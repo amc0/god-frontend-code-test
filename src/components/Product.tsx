@@ -49,11 +49,20 @@ export const Product: React.FC<IProductProps> = (props) => {
         </Row>
         <Spacer />
         <Row align="center">
-          <Link href={`/learn/${props.carInfo.id}`} arrow="right">
-            <a className="product-link">Learn</a>
+          <Link
+            href={`/learn/${props.carInfo.id}`}
+            arrow="right"
+            style={{ margin: "0 1rem" }}
+            
+          >
+            Learn
           </Link>
-          <Link href={`/shop/${props.carInfo.id}`} arrow="right">
-            <a className="product-link">Shop</a>
+          <Link
+            href={`/shop/${props.carInfo.id}`}
+            arrow="right"
+            style={{ margin: "0 1rem" }}
+          >
+            Shop
           </Link>
         </Row>
       </Grid>
@@ -68,12 +77,6 @@ export const Product: React.FC<IProductProps> = (props) => {
 
             list-style-type: none;
             scroll-snap-align: start;
-          }
-          .product-link {
-            margin: 0 1rem;
-          }
-          .row {
-            padding: 0;
           }
         `}
       </style>
