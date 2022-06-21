@@ -11,6 +11,7 @@ const Shop = () => {
       <Head>
         <title>Volvo - Shop - {model}</title>
       </Head>
+
       <View>
         <Card>
           <CardContent>

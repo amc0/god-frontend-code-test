@@ -24,7 +24,6 @@ const Home: React.FC<HomePageProps> = (props) => {
   return (
     <React.StrictMode>
       <Head>
-        <html lang="en" />
         <title>Volvo - Cars list</title>
       </Head>
       <StyleProvider>
