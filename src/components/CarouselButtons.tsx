@@ -1,6 +1,4 @@
 import React from "react";
-import { CarsInfo } from "../../types/CarsInfo";
-import { Product } from "./Product";
 
 interface IProductsCarouselProps {
   length: number;
@@ -12,15 +10,18 @@ export const CarouselButtons: React.FC<IProductsCarouselProps> = (props) => {
   return (
     <div className="btns-wrapper">
       <button
-        className="carousel-btn previous"
+        className="carousel-btn"
         style={{ transform: "rotate(180deg)" }}
         disabled={props.currActive == 0}
         onClick={() => props.setCurrActive(props.currActive - 1)}
       ></button>
       <button
         className="carousel-btn"
-        disabled={props.currActive == props.length-1}
-        onClick={() => props.currActive + 4 < props.length && props.setCurrActive(props.currActive + 1)}
+        disabled={props.currActive == props.length - 1}
+        onClick={() =>
+          props.currActive + 4 < props.length &&
+          props.setCurrActive(props.currActive + 1)
+        }
       ></button>
       <style jsx>
         {`

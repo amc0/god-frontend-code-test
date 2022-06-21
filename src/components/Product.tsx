@@ -43,34 +43,24 @@ export const Product: React.FC<IProductProps> = (props) => {
           <Image
             src={props.carInfo.imageUrl}
             alt={props.carInfo.modelName}
-            width={600}
-            height={500}
+            width={400}
+            height={300}
           />
         </Row>
         <Spacer />
         <Row align="center">
-          <Link
-            href={`/learn-${props.carInfo.id}`}
-            className="product-link"
-            arrow="right"
-            style={{ margin: "0 1rem" }}
-          >
-            Learn
+          <Link href={`/learn/${props.carInfo.id}`} arrow="right">
+            <a className="product-link">Learn</a>
           </Link>
-          <Link
-            href={`/shop-${props.carInfo.id}`}
-            className="product-link"
-            arrow="right"
-            style={{ margin: "0 1rem" }}
-          >
-            Shop
+          <Link href={`/shop/${props.carInfo.id}`} arrow="right">
+            <a className="product-link">Shop</a>
           </Link>
         </Row>
       </Grid>
       <style jsx>
         {`
           .product {
-            flex: 0 0 ${props.isMobile ? "85%" : "26%"};
+            flex: 0 0 ${props.isMobile ? "85%" : "25%"};
 
             display: flex;
             padding: 0 ($spacing / 2);
@@ -78,6 +68,12 @@ export const Product: React.FC<IProductProps> = (props) => {
 
             list-style-type: none;
             scroll-snap-align: start;
+          }
+          .product-link {
+            margin: 0 1rem;
+          }
+          .row {
+            padding: 0;
           }
         `}
       </style>

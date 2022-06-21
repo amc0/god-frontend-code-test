@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useTheme } from "vcc-ui";
 import { CarsInfo } from "../../types/CarsInfo";
 import { CarouselButtons } from "./CarouselButtons";
 import { CarouselDots } from "./CarouselDots";
@@ -9,20 +10,30 @@ interface IProductsCarouselProps {
 }
 
 export const ProductsCarousel: React.FC<IProductsCarouselProps> = (props) => {
-  const mobileBreakpoint = 600;
-  const carouselRef = useRef<HTMLUListElement>(null);
-  const productRefs = useRef<(HTMLLIElement | null)[]>([]);
+  const { breakpoints } = useTheme();
+
   const [currActive, setCurrActive] = useState(0);
+  const [mobileBreakpoint, setMobileBreakpoint] = useState(480);
   const [isMobile, setIsMobile] = useState(false);
 
+  const carouselRef = useRef<HTMLUListElement>(null);
+  const productRefs = useRef<(HTMLLIElement | null)[]>([]);
+
   useEffect(() => {
+    let match = /\d+/.exec(breakpoints.fromM);
+    let mobileBreakpoint = match ? parseInt(match[0]) : 480;
+
+    setMobileBreakpoint(mobileBreakpoint);
     setIsMobile(window.innerWidth < mobileBreakpoint);
+  }, [breakpoints]);
+
+  useEffect(() => {
     window.addEventListener("resize", reportWindowSize);
 
     return function cleanup() {
       window.removeEventListener("resize", reportWindowSize);
     };
-  }, []);
+  });
 
   const reportWindowSize = (event: UIEvent) => {
     console.log(event);
