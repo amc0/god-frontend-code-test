@@ -36,14 +36,9 @@ export const ProductsCarousel: React.FC<IProductsCarouselProps> = (props) => {
   });
 
   const reportWindowSize = (event: UIEvent) => {
-    console.log(event);
-    setIsMobile(
-      event &&
-        event.currentTarget &&
-        event.currentTarget.innerWidth < mobileBreakpoint
-        ? true
-        : false
-    );
+    const target = event.target as Window;
+
+    setIsMobile(target.innerWidth < mobileBreakpoint ? true : false);
   };
 
   useEffect(() => {
