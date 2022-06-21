@@ -14,6 +14,7 @@ export const CarouselButtons: React.FC<IProductsCarouselProps> = (props) => {
         style={{ transform: "rotate(180deg)" }}
         disabled={props.currActive == 0}
         onClick={() => props.setCurrActive(props.currActive - 1)}
+        title="Previous car"
       ></button>
       <button
         className="carousel-btn"
@@ -22,6 +23,7 @@ export const CarouselButtons: React.FC<IProductsCarouselProps> = (props) => {
           props.currActive + 4 < props.length &&
           props.setCurrActive(props.currActive + 1)
         }
+        title="Next car"
       ></button>
       <style jsx>
         {`

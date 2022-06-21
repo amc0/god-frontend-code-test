@@ -16,7 +16,8 @@ export const CarouselDots: React.FC<IProductsCarouselProps> = (props) => {
           onClick={() => props.setCurrActive(i)}
           onKeyPress={() => props.setCurrActive(i)}
           role="button"
-          tabIndex={i}
+          tabIndex={0}
+          title={`Car number ${i + 1}`}
         ></span>
       ))}
       <style jsx>

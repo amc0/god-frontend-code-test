@@ -12,4 +12,8 @@ module.exports = {
         // ssr and displayName are configured by default
         styledComponents: true,
     },
+    i18n: {
+        locales: ["en"],
+        defaultLocale: "en",
+    },
 };

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useTheme } from "vcc-ui";
+import { debounce } from "debounce";
 import { CarsInfo } from "../../types/CarsInfo";
 import { CarouselButtons } from "./CarouselButtons";
 import { CarouselDots } from "./CarouselDots";
@@ -28,10 +29,10 @@ export const ProductsCarousel: React.FC<IProductsCarouselProps> = (props) => {
   }, [breakpoints]);
 
   useEffect(() => {
-    window.addEventListener("resize", reportWindowSize);
+    window.addEventListener("resize", delayedResize);
 
     return function cleanup() {
-      window.removeEventListener("resize", reportWindowSize);
+      window.removeEventListener("resize", delayedResize);
     };
   });
 
@@ -40,6 +41,8 @@ export const ProductsCarousel: React.FC<IProductsCarouselProps> = (props) => {
 
     setIsMobile(target.innerWidth < mobileBreakpoint ? true : false);
   };
+
+  const delayedResize = debounce(reportWindowSize, 100);
 
   useEffect(() => {
     if (currActive <= props.products.length && !isMobile)
